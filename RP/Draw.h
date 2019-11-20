@@ -1,9 +1,7 @@
 #pragma once
-#include "../..//Common/Image.h"
+#include "config.h"
 #include "Shader.h"
-#include "..//..//Common/Drawable.h"
 
-//绘制从x0,y0到x1,y1的直线
 
 struct Draw {
 	Draw(Image* image):image(image),height(image->get_height()),width(image->get_width()){
