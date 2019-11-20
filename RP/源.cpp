@@ -4,7 +4,7 @@
 
 
 const char* model_file = "Model\\african_head.obj";
-const char* target_file = "D:\\RenderPics\\png_test.png";
+const char* target_file = "RenderPics\\png_test.png";
 int height = 1000;
 int width = 1000;
 const int MAXDEPTH = 255;

@@ -1,11 +1,11 @@
 #pragma once
 //#define G_DEBUG
 
-#include "..//..//Common/PNGImage.h"
-#include "../../Common/tgaimage.h"
-#include "../../Common/geometry.h"
-#include "../../Common/Model.h"
-#include "../../Common/Camera.h"
+#include "../Common/PNGImage.h"
+#include "../Common/tgaimage.h"
+#include "../Common/geometry.h"
+#include "../Common/Model.h"
+#include "../Common/Camera.h"
 #include <iostream>
 using namespace std;
 
