@@ -28,4 +28,4 @@ vertex 和 fragment是可编程的。现在给出了两个不同的编程实现(
 墙面在Plane.h中实现。采用了UtilShader实现具体见于文件中
 
 现在加上了4重采样，有一定的抗锯齿（不过代码没给就是了）
-![Image text](https://github.com/137900114/tony-render-pipeline/blob/master/RP/RenderPics/mass.png)
+![Image text](https://github.com/137900114/tony-render-pipeline/blob/master/mass.png)
