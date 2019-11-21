@@ -1,56 +1,54 @@
 #include "config.h"
 #include "Draw.h"
-#include <windows.h>
-
+#include "BinlingPhong.h"
+#include "UtilShader.h"
+#include "Sphere.h"
+#include "Plane.h"
 
 const char* model_file = "Model\\african_head.obj";
-const char* target_file = "RenderPics\\png_test.png";
+const char* target_file = "D:\\RenderPics\\sphere.png";
 int height = 1000;
 int width = 1000;
 const int MAXDEPTH = 255;
 
-class TestShader : public Shader {
-private:
-	Vec3f normal;
-	Camera* camera;
-	Vec3f lightDir;
-public:
-	Vec3i  vertex(Vec3f worldPos,Vec3f normal,Vec2f uv) override;
-	Color  fragment(Vec3f bary) override;
-	TestShader(Camera* camera,Vec3f lightDir):camera(camera),lightDir(lightDir){}
-};
-
-Vec3i TestShader::vertex(Vec3f worldPos,Vec3f normal,Vec2f uv) {
-	Vec3f result = camera->worldToScreen(worldPos);
-	this->normal = normal;
-	return Vec3i(result.x,result.y,result.z);
-}
-
-Color TestShader::fragment(Vec3f bary) {
-	float intensity = lightDir * normal;
-	intensity = clamp(intensity * 0.5f + 0.5f,1,0);
-	return Color(255 * intensity,255 * intensity,255 * intensity,255);
-}
 
 
 int main() {
-	PNGImage* image = new PNGImage(height,width,RGBCOLOR);
+	PNGImage* image = new PNGImage(height, width, RGBCOLOR);
 	Draw d(image);
-	Drawable* model = new Model(model_file);
-	Vec3f LightDir(1,1,1);
-	
-	d.area(Vec2i(0,0),Vec2i(1000,1000),BLACK);
+	Drawable* sphere = new Sphere(Vec3f(0,0.5f,1.f), 0.5, 72);
+	Drawable* plane1 = new Plane(Vec3f(-10,10,10),Vec3f(0,10,0),Vec3f(0,0,0));
+	Drawable* plane2 = new Plane(Vec3f(10, 10, 10), Vec3f(0, 10, 0), Vec3f(0, 0, 0));
+	Drawable* plane3 = new Plane(Vec3f(-10, 0 ,10), Vec3f(0, 0, 0), Vec3f(10, 0, 10));
 
+	Vec3f LightDir(0, 1, 1);
+	LightDir = LightDir.normalize();
 
-	Camera camera(width,height,MAXDEPTH);
+	d.area(Vec2i(0, 0), Vec2i(1000, 1000), BLACK);
+
+	Camera camera(width, height, MAXDEPTH);
 
 	CameraDesc desc = camera.getCurrentSetting();
-	desc.center = Vec3f(0,0,3);
+	desc.pos = Vec3f(0, 4, 8);
 	camera.applyNewSetting(desc);
 
-	TestShader* shader = new TestShader(&camera,LightDir);
-	d.drawCall(model, shader);
+	BinlingPhong binshader(&camera, LightDir);
+	binshader.diffus = Vec3f(174, 133, 127);
+	binshader.lightIMax = 1;
+	binshader.lightIMin = 0.3f;
+	binshader.Gross = .02f;
+	d.drawCall(sphere, &binshader);
+
+	UtilShader shader(&camera,LightDir);
+	shader.diffuse = Vec3f(173, 143, 137);
+	d.drawCall(plane1,&shader);
+
+	shader.diffuse = Vec3f(169,162,152);
+	d.drawCall(plane2, &shader);
+
+	shader.diffuse = Vec3f(54,44,55);
+	d.drawCall(plane3, &shader);
+
 	image->flip_vertically();
 	image->save(target_file);
-
 }
