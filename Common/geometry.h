@@ -198,3 +198,22 @@ template <class t> std::ostream& operator<<(std::ostream& s,Matrix4x4<t>& v) {
 
 float clamp(float f);
 float clamp(float f,float max,float min);
+
+template<class t>
+inline t max(t x, t y) { return x > y ? x : y; }
+
+template<class t>
+inline t min(t x, t y) { return x < y ? x : y; }
+
+template<typename vec,int dim>
+vec clampvec(vec v,float max,float min) {
+	for (int i = 0; i < dim; i++)
+		v.raw[i] = clamp(v.raw[i],max,min);
+	return v;
+}
+
+#define DEF_CLAMP_VEC(Dim) inline Vec##Dim##f clamp##Dim##f(Vec##Dim##f v,float max,float min){return clampvec<Vec##Dim##f,2>(v,max,min);}
+
+DEF_CLAMP_VEC(2)
+DEF_CLAMP_VEC(3)
+DEF_CLAMP_VEC(4)

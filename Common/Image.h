@@ -38,6 +38,8 @@ struct Color {
 	}
 };
 
+
+
 class Image
 {
 public:

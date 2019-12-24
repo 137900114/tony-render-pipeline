@@ -1,11 +1,11 @@
 #include "BinlingPhong.h"
 
-Vec3i BinlingPhong::vertex(Vec3f worldPos,Vec3f normal,Vec2f uv,int nvert) {
+Vec3f BinlingPhong::vertex(Vec3f worldPos,Vec3f normal,Vec2f uv,int nvert) {
 	this->worldPos[nvert] = worldPos;
 	this->normal[nvert] = normal;
 
 	Vec3f screenPos = camera->worldToScreen(worldPos);
-	return ftoi(screenPos);
+	return screenPos;
 }
 
 Color BinlingPhong::fragment(Vec3f bary) {
@@ -20,7 +20,8 @@ Color BinlingPhong::fragment(Vec3f bary) {
 
 	Vec3f specular = this->specular * pow(clamp(half * normal),1 / Gross) * specularPow;
 	Vec3f diffus = this->diffus * clamp(normal * this->lightDir , lightIMax,lightIMin);
-	Vec3f result = clamp3f(specular + diffus,255,0);
+	Vec3f result = clamp3f(specular + diffus,1,0);
+	
 
-	return Color(result[0],result[1],result[2],255);
+	return VecToColor(Vec4f(result));
 }

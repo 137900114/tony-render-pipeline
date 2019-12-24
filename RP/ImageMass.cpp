@@ -42,6 +42,6 @@ void ImageMASS::sample(Image* image) {
 				}
 			}
 			temp = temp / ((int)sampleLevel * (int)sampleLevel);
-			image->set(x,y,temp);
+			image->set(x,y,VecToColor(temp));
 		}
 }

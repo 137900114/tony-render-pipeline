@@ -10,10 +10,10 @@ class BinlingPhong : public Shader {
 
 
 public:
-	Vec3i vertex(Vec3f worldPos, Vec3f normal, Vec2f uv, int nvert) override;
+	Vec3f vertex(Vec3f worldPos, Vec3f normal, Vec2f uv, int nvert) override;
 	Color fragment(Vec3f bary) override;
 	BinlingPhong(Camera* camera, Vec3f lightDir) :camera(camera), lightDir(lightDir),
-		specular(255,255,255), diffus(255,255,255){}
+		specular(1,1,1), diffus(1,1,1){}
 
 	float Gross = 0.5f,lightIMax = 1.f,lightIMin = 0.3f;
 	Vec3f specular;

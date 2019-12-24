@@ -4,11 +4,8 @@
 
 
 struct Draw {
-	Draw(Image* image):image(image),height(image->get_height()),width(image->get_width()){
-		zbuffer = new int[height * width];
-		for (int i = 0; i != height * width; i++) {
-			zbuffer[i] = std::numeric_limits<int>::min();
-		}
+	Draw(Image* image):image(image),height(image->get_height()),width(image->get_width())
+	,zbuffer(image->get_height()* image->get_width(),- 1e10){
 	}
 
 	void line(int x0, int y0, int x1, int y1, const Color& color);
@@ -19,15 +16,15 @@ struct Draw {
 	void area(const Vec2i& leftB,const Vec2i& rightC,const Color& color) {
 		area(leftB.x,leftB.y,rightC.x,rightC.y,color);
 	}
-	
+	void triangle(Vec3i* pts,Shader* color);
 
 	void drawCall(Drawable* drawable,Shader* shader);
 
-	~Draw() { delete[] zbuffer; }
+	~Draw() { }
 private:
-	static Vec3f barycentric(const Vec3i* pts, Vec2i p);
-	void triangle(Vec3i* pts,Shader* color);
+	
 
+	static Vec3f barycentric(const Vec3i* pts, Vec2f p);
 	inline int xytoz(int x,int y) {
 		return x + y * width;
 	}
@@ -39,7 +36,7 @@ private:
 	}
 	Image* image;
 
-	int* zbuffer;
+	vector<float> zbuffer;
 	union {
 		struct {
 			int height, width;
